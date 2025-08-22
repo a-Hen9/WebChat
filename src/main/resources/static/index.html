@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WebChat - 登录</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+    <div class="card" style="max-width: 400px; margin: 0 auto;">
+        <div class="card-body">
+            <h3 class="card-title text-center">WebChat</h3>
+            
+            <!-- 登录表单 -->
+            <div id="login-form">
+                <div class="mb-3">
+                    <label>用户名</label>
+                    <input type="text" id="login-username" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label>密码</label>
+                    <input type="password" id="login-password" class="form-control">
+                </div>
+                <button onclick="login()" class="btn btn-primary w-100">登录</button>
+                <p class="text-center mt-3">
+                    没有账号？<a href="#" onclick="showRegister()">注册</a>
+                </p>
+            </div>
+
+            <!-- 注册表单 -->
+            <div id="register-form" class="hidden">
+                <div class="mb-3">
+                    <label>用户名</label>
+                    <input type="text" id="reg-username" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label>密码</label>
+                    <input type="password" id="reg-password" class="form-control">
+                </div>
+                <button onclick="register()" class="btn btn-success w-100">注册</button>
+                <p class="text-center mt-3">
+                    已有账号？<a href="#" onclick="showLogin()">登录</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script>
+        // 切换登录/注册表单
+        function showRegister() {
+            $('#login-form').addClass('hidden');
+            $('#register-form').removeClass('hidden');
+        }
+        function showLogin() {
+            $('#register-form').addClass('hidden');
+            $('#login-form').removeClass('hidden');
+        }
+
+        // 注册
+        function register() {
+            const user = {
+                username: $('#reg-username').val(),
+                password: $('#reg-password').val()
+            };
+            $.post('/auth/register', user, (res) => {
+                alert(res);
+                showLogin();
+            }).fail(err => alert(err.responseText));
+        }
+
+        // 登录
+        function login() {
+            const user = {
+                username: $('#login-username').val(),
+                password: $('#login-password').val()
+            };
+            $.post('/auth/login', user, (res) => {
+                window.location.href = '/chat.html'; // 登录成功跳转聊天页
+            }).fail(err => alert(err.responseText));
+        }
+    </script>
+</body>
+</html>
