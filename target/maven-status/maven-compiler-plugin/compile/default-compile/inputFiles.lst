@@ -10,6 +10,8 @@ E:\code\WebChat\src\main\java\com\example\webchat\controller\RoomController.java
 E:\code\WebChat\src\main\java\com\example\webchat\repository\UserRepository.java
 E:\code\WebChat\src\main\java\com\example\webchat\service\UserService.java
 E:\code\WebChat\src\main\java\com\example\webchat\entity\RoomMember.java
+E:\code\WebChat\src\main\java\com\example\webchat\service\impl\RoomServiceImpl.java
 E:\code\WebChat\src\main\java\com\example\webchat\entity\User.java
 E:\code\WebChat\src\main\java\com\example\webchat\repository\RoomMemberRepository.java
 E:\code\WebChat\src\main\java\com\example\webchat\service\impl\UserServiceImpl.java
+E:\code\WebChat\src\main\java\com\example\webchat\service\RoomService.java

@@ -12,52 +12,45 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "room_id", nullable = false)
+    private Long roomId;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
+    @Column(name = "sender_id", nullable = false)
+    private Long senderId;
     
     @Column(nullable = false, length = 1000)
     private String content;
     
+    @Column(name = "message_type", columnDefinition = "ENUM('text', 'image', 'file', 'system') DEFAULT 'text'")
+    private String messageType;
+    
+    @Column(name = "file_url")
+    private String fileUrl;
+    
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     
-    // 手动添加getter方法
-    public User getUser() {
-        return user;
+    public Long getSenderId() {
+        return senderId;
     }
     
-    public Room getRoom() {
-        return room;
+    public void setSenderId(Long senderId) {
+        this.senderId = senderId;
     }
     
     public String getContent() {
         return content;
     }
     
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-    
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
-    
-    // 手动添加setter方法
-    public void setUser(User user) {
-        this.user = user;
-    }
-    
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-    
     public void setContent(String content) {
         this.content = content;
+    }
+    
+    public Long getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(Long roomId) {
+        this.roomId = roomId;
     }
 }

@@ -27,6 +27,10 @@ public class AuthController {
         if (userService.existsByUsername(user.getUsername())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("用户名已存在");
         }
+        // 检查邮箱是否已存在，但仅在邮箱不为null时
+        if (user.getEmail() != null && userService.existsByEmail(user.getEmail())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("邮箱已存在");
+        }
         userService.saveUser(user);
         return ResponseEntity.ok("注册成功");
     }
@@ -35,7 +39,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody User user, HttpSession session) {
         return userService.findByUsername(user.getUsername())
-                .filter(u -> passwordEncoder.matches(user.getPassword(), u.getPassword()))
+                .filter(u -> passwordEncoder.matches(user.getPasswordHash(), u.getPasswordHash()))
                 .map(u -> {
                     session.setAttribute("username", u.getUsername()); // 保存会话
                     return ResponseEntity.ok("登录成功");

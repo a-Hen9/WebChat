@@ -15,20 +15,22 @@ public class Room {
     @Column(nullable = false)
     private String name;
     
+    @Column(length = 1000)
+    private String description;
+    
+    @Column(name = "is_private")
+    private Boolean isPrivate;
+    
+    @Column(name = "created_by", nullable = false)
+    private Long createdBy;
+    
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Column(name = "max_members")
+    private Integer maxMembers;
     
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-    
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+    public Long getId() {
+        return id;
     }
 }

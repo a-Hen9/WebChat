@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User saveUser(User user) {
         // 加密密码
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
         return userRepository.save(user);
     }
     
@@ -32,5 +32,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
+    }
+    
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+    
+    @Override
+    public Boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

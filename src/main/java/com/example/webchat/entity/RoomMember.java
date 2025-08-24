@@ -12,16 +12,20 @@ public class RoomMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
+    @Column(name = "room_id", nullable = false)
+    private Long roomId;
+    
+    @Column(name = "role", columnDefinition = "ENUM('owner', 'admin', 'member') DEFAULT 'member'")
+    private String role;
     
     @Column(name = "joined_at")
     private LocalDateTime joinedAt;
+    
+    @Column(name = "nickname")
+    private String nickname;
     
     @PrePersist
     protected void onCreate() {

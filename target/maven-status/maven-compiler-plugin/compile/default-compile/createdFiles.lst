@@ -1,4 +1,6 @@
 com\example\webchat\repository\MessageRepository.class
+com\example\webchat\service\impl\RoomServiceImpl.class
+com\example\webchat\service\RoomService.class
 com\example\webchat\controller\AuthController.class
 com\example\webchat\WebChatApplication.class
 com\example\webchat\entity\Room.class

@@ -7,15 +7,16 @@ import com.example.webchat.repository.MessageRepository;
 import com.example.webchat.repository.RoomRepository;
 import com.example.webchat.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 @Controller
 public class ChatController {
@@ -35,15 +36,19 @@ public class ChatController {
     public Message sendMessage(@Payload Message message, 
                              @PathVariable Long roomId,
                              SimpMessageHeaderAccessor headerAccessor) {
-        // 从会话获取当前用户
-        String username = (String) headerAccessor.getSessionAttributes().get("username");
-        User user = userRepository.findByUsername(username).orElseThrow();
-        Room room = roomRepository.findById(roomId).orElseThrow();
+        try {
+            // 从会话获取当前用户
+            String username = (String) headerAccessor.getSessionAttributes().get("username");
+            User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+            Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("Room not found"));
 
-        // 填充消息关联信息
-        message.setUser(user);
-        message.setRoom(room);
-        return messageRepository.save(message); // 保存到数据库
+            // 填充消息关联信息
+            message.setSenderId(user.getId());
+            message.setRoomId(room.getId());
+            return messageRepository.save(message); // 保存到数据库
+        } catch (Exception e) {
+            throw new RuntimeException("Error sending message: " + e.getMessage());
+        }
     }
 
     // 加入房间
@@ -52,9 +57,18 @@ public class ChatController {
     public Message addUser(@Payload Message message, 
                           @PathVariable Long roomId,
                           SimpMessageHeaderAccessor headerAccessor) {
-        String username = (String) headerAccessor.getSessionAttributes().get("username");
-        headerAccessor.getSessionAttributes().put("roomId", roomId); // 记录当前房间
-        message.setContent(username + "加入了房间");
-        return message;
+        try {
+            String username = (String) headerAccessor.getSessionAttributes().get("username");
+            headerAccessor.getSessionAttributes().put("roomId", roomId); // 记录当前房间
+            message.setContent(username + "加入了房间");
+            return message;
+        } catch (Exception e) {
+            throw new RuntimeException("Error adding user: " + e.getMessage());
+        }
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeException(RuntimeException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }
