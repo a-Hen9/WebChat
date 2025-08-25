@@ -2,6 +2,7 @@ E:\code\WebChat\src\main\java\com\example\webchat\controller\ChatController.java
 E:\code\WebChat\src\main\java\com\example\webchat\entity\Message.java
 E:\code\WebChat\src\main\java\com\example\webchat\repository\RoomRepository.java
 E:\code\WebChat\src\main\java\com\example\webchat\controller\AuthController.java
+E:\code\WebChat\src\main\java\com\example\webchat\DatabaseConnectionTest.java
 E:\code\WebChat\src\main\java\com\example\webchat\repository\MessageRepository.java
 E:\code\WebChat\src\main\java\com\example\webchat\entity\Room.java
 E:\code\WebChat\src\main\java\com\example\webchat\config\WebSocketConfig.java

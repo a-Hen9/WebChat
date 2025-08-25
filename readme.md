@@ -30,9 +30,9 @@
 7. 在文本框中输入以下JSON数据:
    ```json
    {
-     "username": "testuser",
-     "email": "testuser@example.com",
-     "password": "testpassword"
+   "username": "testuser",
+   "email": "test@example.com",
+   "passwordHash": "testpassword"
    }
    ```
 8. 点击`Send`按钮发送请求
@@ -51,7 +51,7 @@
    ```json
    {
      "username": "testuser",
-     "password": "testpassword"
+     "passwordHash": "testpassword"
    }
    ```
 7. 点击`Send`按钮发送请求

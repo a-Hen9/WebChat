@@ -30,6 +30,15 @@ public class Message {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     
+    // 外键关系映射
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id", insertable = false, updatable = false)
+    private Room room;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id", insertable = false, updatable = false)
+    private User sender;
+    
     public Long getSenderId() {
         return senderId;
     }

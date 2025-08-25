@@ -95,7 +95,7 @@
         function register() {
             const user = {
                 username: $('#reg-username').val(),
-                password: $('#reg-password').val(),
+                passwordHash: $('#reg-password').val(),
                 email: $('#reg-email').val()  // 添加这一行
             };
             
@@ -119,7 +119,7 @@
         function login() {
             const user = {
                 username: $('#login-username').val(),
-                password: $('#login-password').val()
+                passwordHash: $('#login-password').val()
             };
             
             // 使用 AJAX 发送 JSON 数据

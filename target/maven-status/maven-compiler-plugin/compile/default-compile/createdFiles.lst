@@ -11,7 +11,9 @@ com\example\webchat\entity\RoomMember.class
 com\example\webchat\controller\RoomController.class
 com\example\webchat\controller\ChatController.class
 com\example\webchat\repository\RoomRepository.class
+com\example\webchat\DatabaseConnectionTest.class
 com\example\webchat\entity\User.class
+com\example\webchat\entity\RoomMember$RoomMemberId.class
 com\example\webchat\entity\Message.class
 com\example\webchat\service\UserService.class
 com\example\webchat\repository\UserRepository.class
