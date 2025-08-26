@@ -30,6 +30,10 @@ public class Message {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     
+    // 发送者名字（非持久化字段）
+    @Transient
+    private String senderName;
+    
     // 外键关系映射
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id", insertable = false, updatable = false)
@@ -55,11 +59,35 @@ public class Message {
         this.content = content;
     }
     
+    public String getMessageType() {
+        return messageType;
+    }
+    
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
+    }
+    
     public Long getRoomId() {
         return roomId;
     }
 
     public void setRoomId(Long roomId) {
         this.roomId = roomId;
+    }
+    
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+    
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+    
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

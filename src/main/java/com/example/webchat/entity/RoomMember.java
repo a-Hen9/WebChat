@@ -71,4 +71,45 @@ public class RoomMember {
             return Objects.hash(userId, roomId);
         }
     }
+    
+    // Getter和Setter方法
+    public Long getUserId() {
+        return userId;
+    }
+    
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+    
+    public Long getRoomId() {
+        return roomId;
+    }
+    
+    public void setRoomId(Long roomId) {
+        this.roomId = roomId;
+    }
+    
+    public String getRole() {
+        return role;
+    }
+    
+    public void setRole(String role) {
+        this.role = role;
+    }
+    
+    public LocalDateTime getJoinedAt() {
+        return joinedAt;
+    }
+    
+    public void setJoinedAt(LocalDateTime joinedAt) {
+        this.joinedAt = joinedAt;
+    }
+    
+    public String getNickname() {
+        return nickname;
+    }
+    
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

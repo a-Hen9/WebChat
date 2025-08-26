@@ -77,4 +77,12 @@ public class AuthController {
         String username = (String) session.getAttribute("username");
         return username != null ? ResponseEntity.ok(username) : ResponseEntity.noContent().build();
     }
+    
+    // 退出登录
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpSession session) {
+        logger.info("用户退出登录: {}", session.getAttribute("username"));
+        session.invalidate(); // 使会话无效
+        return ResponseEntity.ok("退出成功");
+    }
 }

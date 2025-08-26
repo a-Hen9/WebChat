@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Debug Page</title>
+    <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/1.5.1/dist/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .debug-panel {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+        .input-group label {
+            display: inline-block;
+            width: 100px;
+        }
+        .input-group input {
+            width: 300px;
+            padding: 5px;
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .log-container {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+        }
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        .log-time {
+            color: #666;
+            font-size: 12px;
+        }
+        .log-info {
+            color: #0066cc;
+        }
+        .log-error {
+            color: #cc0000;
+        }
+        .log-debug {
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>WebSocket Debug Page</h1>
+        
+        <div class="debug-panel">
+            <div class="input-group">
+                <label for="roomId">房间ID:</label>
+                <input type="number" id="roomId" value="1">
+            </div>
+            <div class="input-group">
+                <label for="username">用户名:</label>
+                <input type="text" id="username" value="debug_user">
+            </div>
+            <div class="input-group">
+                <label for="messageText">消息内容:</label>
+                <input type="text" id="messageText" value="WebSocket debug message">
+            </div>
+            <div>
+                <button id="connectBtn">连接WebSocket</button>
+                <button id="disconnectBtn" disabled>断开连接</button>
+                <button id="sendJoinBtn" disabled>发送加入消息</button>
+                <button id="sendChatBtn" disabled>发送聊天消息</button>
+                <button id="clearLogBtn">清空日志</button>
+            </div>
+        </div>
+        
+        <div class="log-container" id="logContainer">
+            <!-- 日志将显示在这里 -->
+        </div>
+    </div>
+    
+    <script>
+        let stompClient = null;
+        let roomId = null;
+        let username = '';
+        
+        // 初始化事件监听
+        $(document).ready(function() {
+            $('#connectBtn').click(connect);
+            $('#disconnectBtn').click(disconnect);
+            $('#sendJoinBtn').click(sendJoinMessage);
+            $('#sendChatBtn').click(sendChatMessage);
+            $('#clearLogBtn').click(clearLog);
+            
+            log('info', '调试页面已加载，请输入房间ID和用户名后点击连接按钮');
+        });
+        
+        // 连接WebSocket
+        function connect() {
+            roomId = $('#roomId').val();
+            username = $('#username').val();
+            
+            if (!roomId || !username) {
+                log('error', '请输入房间ID和用户名');
+                return;
+            }
+            
+            log('info', `尝试连接到房间 ${roomId} 作为用户 ${username}`);
+            
+            const socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            
+            // 设置调试日志
+            stompClient.debug = function(str) {
+                log('debug', `STOMP: ${str}`);
+            };
+            
+            // 设置连接超时
+            const connectionTimeout = setTimeout(() => {
+                log('error', '连接超时');
+                if (stompClient) {
+                    stompClient.disconnect();
+                }
+                updateUI(false);
+            }, 5000);
+            
+            stompClient.connect({}, function(frame) {
+                clearTimeout(connectionTimeout);
+                log('info', `已连接: ${frame}`);
+                updateUI(true);
+                
+                // 订阅房间消息
+                const subscription = stompClient.subscribe(`/topic/room/${roomId}`, function(messageOutput) {
+                    log('info', `收到房间消息: ${messageOutput.body}`);
+                    try {
+                        const message = JSON.parse(messageOutput.body);
+                        log('info', `解析后的消息: ${JSON.stringify(message, null, 2)}`);
+                        // 检查消息结构
+                        if (!message.messageType) {
+                            log('error', '消息缺少messageType字段');
+                        }
+                        if (!message.senderName) {
+                            log('error', '消息缺少senderName字段');
+                        }
+                    } catch (e) {
+                        log('error', `解析消息失败: ${e.message}`);
+                    }
+                });
+                
+                log('info', `已订阅房间主题: /topic/room/${roomId}`);
+                
+                // 订阅用户消息
+                const userSubscription = stompClient.subscribe(`/user/queue/messages`, function(messageOutput) {
+                    log('info', `收到用户消息: ${messageOutput.body}`);
+                });
+                
+                log('info', `已订阅用户主题: /user/queue/messages`);
+            }, function(error) {
+                clearTimeout(connectionTimeout);
+                log('error', `连接失败: ${error}`);
+                updateUI(false);
+            });
+        }
+        
+        // 断开连接
+        function disconnect() {
+            if (stompClient !== null) {
+                stompClient.disconnect(function() {
+                    log('info', '已断开连接');
+                    updateUI(false);
+                });
+            } else {
+                log('info', '未连接');
+            }
+        }
+        
+        // 发送加入消息
+        function sendJoinMessage() {
+            if (stompClient && roomId && username) {
+                const joinMessage = {
+                    sender: username,
+                    type: 'JOIN'
+                };
+                log('info', `发送加入消息: ${JSON.stringify(joinMessage)}`);
+                stompClient.send(`/app/chat/${roomId}/addUser`, {}, JSON.stringify(joinMessage));
+            }
+        }
+        
+        // 发送聊天消息
+        function sendChatMessage() {
+            if (stompClient && roomId && username) {
+                const messageText = $('#messageText').val();
+                const chatMessage = {
+                    sender: username,
+                    content: messageText,
+                    messageType: 'CHAT'
+                };
+                log('info', `发送聊天消息: ${JSON.stringify(chatMessage)}`);
+                stompClient.send(`/app/chat/${roomId}/sendMessage`, {}, JSON.stringify(chatMessage));
+            }
+        }
+        
+        // 更新UI状态
+        function updateUI(connected) {
+            if (connected) {
+                $('#connectBtn').prop('disabled', true);
+                $('#disconnectBtn').prop('disabled', false);
+                $('#sendJoinBtn').prop('disabled', false);
+                $('#sendChatBtn').prop('disabled', false);
+                $('#roomId').prop('disabled', true);
+                $('#username').prop('disabled', true);
+            } else {
+                $('#connectBtn').prop('disabled', false);
+                $('#disconnectBtn').prop('disabled', true);
+                $('#sendJoinBtn').prop('disabled', true);
+                $('#sendChatBtn').prop('disabled', true);
+                $('#roomId').prop('disabled', false);
+                $('#username').prop('disabled', false);
+                stompClient = null;
+            }
+        }
+        
+        // 记录日志
+        function log(type, message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `<div class="log-entry">
+                <span class="log-time">${timestamp}</span> - 
+                <span class="log-${type}">${message}</span>
+            </div>`;
+            $('#logContainer').append(logEntry);
+            $('#logContainer').scrollTop($('#logContainer')[0].scrollHeight);
+        }
+        
+        // 清空日志
+        function clearLog() {
+            $('#logContainer').empty();
+            log('info', '日志已清空');
+        }
+    </script>
+</body>
+</html>

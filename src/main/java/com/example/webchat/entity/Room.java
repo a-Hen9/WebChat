@@ -27,15 +27,29 @@ public class Room {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     
-    @Column(name = "max_members")
-    private Integer maxMembers;
-    
     // 外键关系映射
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", insertable = false, updatable = false)
     private User creator;
     
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+    
     public Long getId() {
         return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
     }
 }
