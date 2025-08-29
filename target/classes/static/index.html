@@ -1,34 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebChat - 登录/注册</title>
-    <link href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .form-switcher {
-            display: flex;
-            border-bottom: 1px solid #dee2e6;
-            margin-bottom: 20px;
-        }
-        .form-switcher a {
-            flex: 1;
-            text-align: center;
-            padding: 10px 0;
-            text-decoration: none;
-            color: #6c757d;
-            font-weight: bold;
-        }
-        .form-switcher a.active {
-            color: #007bff;
-            border-bottom: 2px solid #007bff;
-        }
-        .form-switcher a:not(.active):hover {
-            background-color: #f8f9fa;
-        }
-        .hidden {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="/js/auth.js"></script>
 </head>
 <body class="container mt-5">
     <div class="card" style="max-width: 400px; margin: 0 auto;">
@@ -44,98 +24,37 @@
             <!-- 登录表单 -->
             <div id="login-form">
                 <div class="mb-3">
-                    <label>用户名</label>
-                    <input type="text" id="login-username" class="form-control">
+                    <label for="login-username" class="form-label">用户名</label>
+                    <input type="text" id="login-username" class="form-control" placeholder="请输入用户名" required>
                 </div>
                 <div class="mb-3">
-                    <label>密码</label>
-                    <input type="password" id="login-password" class="form-control">
+                    <label for="login-password" class="form-label">密码</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="请输入密码" required>
                 </div>
-                <button onclick="login()" class="btn btn-primary w-100">登录</button>
+                <div class="mb-3">
+                    <button type="button" id="loginButton" class="btn btn-primary w-100" onclick="login()">登录</button>
+                </div>
             </div>
 
             <!-- 注册表单 -->
             <div id="register-form" class="hidden">
                 <div class="mb-3">
-                    <label>用户名</label>
-                    <input type="text" id="reg-username" class="form-control">
+                    <label for="reg-username" class="form-label">用户名</label>
+                    <input type="text" id="reg-username" class="form-control" placeholder="请输入用户名" required>
                 </div>
                 <div class="mb-3">
-                    <label>邮箱</label>  <!-- 添加这一部分 -->
-                    <input type="email" id="reg-email" class="form-control">
+                    <label for="reg-email" class="form-label">邮箱</label>
+                    <input type="email" id="reg-email" class="form-control" placeholder="请输入邮箱" required>
                 </div>
                 <div class="mb-3">
-                    <label>密码</label>
-                    <input type="password" id="reg-password" class="form-control">
+                    <label for="reg-password" class="form-label">密码</label>
+                    <input type="password" id="reg-password" class="form-control" placeholder="请输入密码" required>
                 </div>
-                <button onclick="register()" class="btn btn-success w-100">注册</button>
+                <div class="mb-3">
+                    <button type="button" id="registerButton" class="btn btn-primary w-100" onclick="register()">注册</button>
+                </div>
             </div>
         </div>
     </div>
-
-    <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-        // 切换到登录表单
-        function switchToLogin() {
-            $('#login-form').removeClass('hidden');
-            $('#register-form').addClass('hidden');
-            $('#login-tab').addClass('active');
-            $('#register-tab').removeClass('active');
-        }
-        
-        // 切换到注册表单
-        function switchToRegister() {
-            $('#register-form').removeClass('hidden');
-            $('#login-form').addClass('hidden');
-            $('#register-tab').addClass('active');
-            $('#login-tab').removeClass('active');
-        }
-
-        // 注册
-        function register() {
-            const user = {
-                username: $('#reg-username').val(),
-                passwordHash: $('#reg-password').val(),
-                email: $('#reg-email').val()  // 添加这一行
-            };
-            
-            // 使用 AJAX 发送 JSON 数据
-            $.ajax({
-                url: '/auth/register',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(user),
-                success: function(res) {
-                    alert(res);
-                    switchToLogin();
-                },
-                error: function(err) {
-                    alert(err.responseText);
-                }
-            });
-        }
-
-        // 登录
-        function login() {
-            const user = {
-                username: $('#login-username').val(),
-                passwordHash: $('#login-password').val()
-            };
-            
-            // 使用 AJAX 发送 JSON 数据
-            $.ajax({
-                url: '/auth/login',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(user),
-                success: function(res) {
-                    window.location.href = '/chat.html'; // 登录成功跳转聊天页
-                },
-                error: function(err) {
-                    alert(err.responseText);
-                }
-            });
-        }
-    </script>
 </body>
 </html>

@@ -1,0 +1,564 @@
+/* 全局样式 */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 登录/注册页面样式 */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.auth-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    padding: 30px;
+}
+
+.auth-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+/* 表单切换器样式 */
+.form-switcher {
+    display: flex;
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.form-switcher a {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    text-decoration: none;
+    color: #6c757d;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-switcher a.active {
+    color: #007bff;
+    font-weight: 600;
+}
+
+.form-switcher a:not(.active):hover {
+    background-color: #f8f9fa;
+    color: #495057;
+}
+
+.hidden {
+    display: none;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #495057;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    border-color: #4361ee;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+}
+
+.btn {
+    display: inline-block;
+    font-weight: 500;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    user-select: none;
+}
+
+.btn-primary {
+    color: white;
+    background-color: #4361ee;
+    border-color: #4361ee;
+}
+
+.btn-primary:hover {
+    background-color: #3a56e4;
+    border-color: #3a56e4;
+}
+
+.btn-success {
+    color: white;
+    background-color: #4cc9f0;
+    border-color: #4cc9f0;
+}
+
+.btn-success:hover {
+    background-color: #43bccd;
+    border-color: #43bccd;
+}
+
+.btn-danger {
+    color: white;
+    background-color: #f72585;
+    border-color: #f72585;
+}
+
+.btn-danger:hover {
+    background-color: #e7247d;
+    border-color: #e7247d;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+/* 聊天室页面样式 */
+.chat-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 40px);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    background-color: #4361ee;
+    color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.header .user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header button {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.header button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.chat-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.room-list {
+    width: 300px;
+    background-color: #f8f9fa;
+    border-right: 1px solid #e9ecef;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.room-list h3 {
+    padding: 20px;
+    margin: 0;
+    font-size: 18px;
+    border-bottom: 1px solid #e9ecef;
+    background-color: white;
+}
+
+.create-room-form {
+    padding: 20px;
+    background-color: white;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.create-room-form h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #495057;
+}
+
+.create-room-form .form-control {
+    margin-bottom: 12px;
+    padding: 10px;
+}
+
+.create-room-form textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.create-room-form label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+
+.create-room-form input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.create-room-form button {
+    width: 100%;
+    padding: 10px;
+}
+
+#createRoomMessage {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 500;
+}
+
+#createRoomMessage.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+#createRoomMessage.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.rooms-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+.room-item {
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+.room-item:hover {
+    background-color: #f8f9fa;
+    border-color: #4361ee;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.room-item strong {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.room-item div {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 3px;
+}
+
+.chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+#chatHeader {
+    padding: 20px 30px;
+    border-bottom: 1px solid #e9ecef;
+    background-color: white;
+}
+
+#chatHeader h3 {
+    margin: 0;
+    color: #333;
+}
+
+#messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 30px;
+    background-color: #fafafa;
+}
+
+/* 消息容器样式 */
+.message-container {
+    display: flex;
+    margin-bottom: 20px;
+    align-items: flex-start;
+}
+
+.message-container.sent {
+    flex-direction: row-reverse;
+}
+
+/* 用户名头像样式 */
+.avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin: 0 15px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 消息气泡样式 */
+.message-content {
+    max-width: 70%;
+}
+
+.message-bubble {
+    padding: 15px 20px;
+    border-radius: 20px;
+    position: relative;
+    word-wrap: break-word;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.message-bubble.sent {
+    background-color: #4361ee;
+    color: white;
+    border-bottom-right-radius: 6px;
+}
+
+.message-bubble.received {
+    background-color: white;
+    color: #333;
+    border-bottom-left-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* 系统消息样式 */
+.message-system {
+    text-align: center;
+    margin: 15px 0;
+    padding: 8px 15px;
+    color: #6c757d;
+    font-size: 0.9em;
+    position: relative;
+}
+
+.message-system::before, .message-system::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: calc(50% - 80px);
+    height: 1px;
+    background-color: #dee2e6;
+}
+
+.message-system::before {
+    left: 0;
+}
+
+.message-system::after {
+    right: 0;
+}
+
+/* 消息时间样式 */
+.message-time {
+    font-size: 0.8em;
+    opacity: 0.7;
+    margin-top: 5px;
+    text-align: right;
+    padding: 0 20px;
+}
+
+.message-container.sent .message-time {
+    text-align: left;
+}
+
+.message-form {
+    display: flex;
+    padding: 20px 30px;
+    border-top: 1px solid #e9ecef;
+    background-color: white;
+    gap: 15px;
+}
+
+#messageInput {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 25px;
+    font-size: 15px;
+    resize: none;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#messageInput:focus {
+    border-color: #4361ee;
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+}
+
+#sendButton {
+    padding: 12px 25px;
+    background-color: #4361ee;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+#sendButton:hover {
+    background-color: #3a56e4;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+}
+
+#sendButton:disabled {
+    background-color: #dee2e6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .chat-body {
+        flex-direction: column;
+    }
+    
+    .room-list {
+        width: 100%;
+        height: 300px;
+        border-right: none;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .message-content {
+        max-width: 85%;
+    }
+    
+    .avatar {
+        width: 36px;
+        height: 36px;
+        margin: 0 10px;
+    }
+    
+    .form-switcher a {
+        padding: 10px 0;
+        font-size: 14px;
+    }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message-container, .message-system {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+/* 加载动画 */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #4361ee;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
